@@ -7,4 +7,4 @@
  - webapp - сам проект, включающий себя frontend и backend, а также docker-compose.yml для поднятия приложения в контейнерах
  - autotests - проект автотестов, который был сгенерирован нейросетью
 
-![structure.jpg](structure.jpg)
+![structure.png](structure.png)
