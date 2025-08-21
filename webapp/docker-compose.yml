@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  # ваш фронт как было (пример)
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    container_name: front
+    ports:
+      - "3010:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+    restart: unless-stopped
+
+  # новый Java-бэкенд
+  back:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    container_name: back
+    environment:
+      PORT: 8090
+    ports:
+      - "8090:8090"
+    restart: unless-stopped
