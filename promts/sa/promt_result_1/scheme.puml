@@ -1,0 +1,33 @@
+@startuml
+title Поиск объекта по ИНН: alfa-taxref-ui -> alfa-taxref-api -> MongoDB
+actor Пользователь as user
+participant "alfa-taxref-ui\n(NodeJS)" as ui
+participant "alfa-taxref-api\n(Java REST)" as api
+participant "MongoDB" as db
+
+== Запрос данных ==
+user -> ui : Ввод ИНН
+activate ui
+ui -> api : GET /taxref/search?inn={inn}
+activate api
+
+== Обработка запроса ==
+api -> api : Валидация ИНН
+api -> db : db.taxref.find(\n    {"PhysINNID": inn}\n)
+activate db
+db --> api : Результат (BSON документ)
+deactivate db
+
+== Формирование ответа ==
+alt Найдена запись
+    api -> api : Маппинг BSON -> DTO
+    api --> ui : HTTP 200 (application/json)
+else Не найдено
+    api --> ui : HTTP 404
+end
+deactivate api
+
+== Отображение результата ==
+ui -> user : Отображение данных/ошибки
+deactivate ui
+@enduml
